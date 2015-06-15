@@ -31,10 +31,6 @@ public class StarcraftGame {
 
 	protected void initialize(Tribe tribe) {
 		this.mTribe = tribe;
-
-
-		// Initialize thread-pool
-		mExecutor = Executors.newSingleThreadExecutor();
 	}
 
 
@@ -52,7 +48,13 @@ public class StarcraftGame {
 
 
 	protected void startGame() {
-		this.mIsStarted = true;
+		if (!isGameStarted()) {
+			this.mIsStarted = true;
+
+			// Initialize thread-pool
+			/*mExecutor = Executors.newSingleThreadExecutor();*/
+			mExecutor = Executors.newCachedThreadPool();
+		}
 	}
 
 
@@ -66,6 +68,8 @@ public class StarcraftGame {
 	protected void stopGame() {
 		if (isGameStarted()) {
 			this.mIsStarted = false;
+
+			// Shutdown thread-pool
 			getGameThreadExecutor().shutdownNow();
 		}
 	}
@@ -95,9 +99,50 @@ public class StarcraftGame {
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		} finally {
-			getGameThreadExecutor().shutdown();
+			//
 		}
 
 		return null;
 	}
+
+
+
+	public void requestBuilding(BuildingTypes buildingTypes, AbstractBuildableUnit buildableUnit, Handler<Building> handler) {
+		getGameThreadExecutor().execute(new Runnable() {
+			@Override public void run() {
+				System.out.println(String.format("'%s' started to build '%s'...", buildableUnit, buildingTypes));
+
+				// current time (milliseconds)
+				final long time1 = System.currentTimeMillis();
+
+				while ((System.currentTimeMillis() - time1) < buildingTypes.getRequiredProduceTime() * 1000) {
+					try { Thread.sleep(1000); } catch (InterruptedException e) {}
+				}
+
+				// Handle result
+				//return buildableUnit.build(buildingTypes);
+				if (handler != null) {
+					handler.onHandle(buildableUnit.build(buildingTypes));
+				}
+			}
+		});
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -6,7 +6,9 @@ package com.bong.starcraft.game;
  */
 public class StarcraftGameHost {
 	public static StarcraftGame startNewGame(Tribe tribe) {
-		return new StarcraftGame(tribe);
+		StarcraftGame newGame = new StarcraftGame(tribe);
+		newGame.startGame();
+		return newGame;
 	}
 
 
