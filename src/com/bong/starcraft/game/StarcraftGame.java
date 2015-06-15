@@ -23,15 +23,23 @@ public class StarcraftGame {
 
 
 
+	/**
+	 * Receive tribe from StarcraftGameHost.
+	 */
 	public StarcraftGame(Tribe tribe) {
 		initialize(tribe);
 	}
 
 
 
+	/**
+	 * Initialize mTribe and make newSingleThreadExecutor.
+	 */
 	protected void initialize(Tribe tribe) {
 		this.mTribe = tribe;
-
+        /***/
+        startGame();
+        /***/
 
 		// Initialize thread-pool
 		mExecutor = Executors.newSingleThreadExecutor();
@@ -67,11 +75,16 @@ public class StarcraftGame {
 		if (isGameStarted()) {
 			this.mIsStarted = false;
 			getGameThreadExecutor().shutdownNow();
+
 		}
 	}
 
 
 
+	/**
+	 * Receive buildingTypes and buildableUnit. In Callable<Building>, return buildableUnit and buildingTypes.
+	 * and getGameThreadExecutor().submit().get() execute.
+	 */
 	public Building requestBuilding(BuildingTypes buildingTypes, AbstractBuildableUnit buildableUnit) {
 		try {
 			return getGameThreadExecutor().submit(new Callable<Building>() {
@@ -95,9 +108,11 @@ public class StarcraftGame {
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		} finally {
-			getGameThreadExecutor().shutdown();
+
+			//getGameThreadExecutor().shutdown();
 		}
 
 		return null;
 	}
+
 }

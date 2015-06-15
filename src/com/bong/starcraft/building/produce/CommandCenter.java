@@ -23,10 +23,10 @@ public class CommandCenter extends AbstractProducableBuilding<Unit> {
 	}
 
 
-
 	@Override protected Unit onProduce(TerranUnitTypes unitTypes) {
 		switch (unitTypes) {
 			case SCV:
+
 				return new SCV(getGameInstance());
 
 			default:

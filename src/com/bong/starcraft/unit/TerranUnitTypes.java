@@ -8,7 +8,8 @@ public enum TerranUnitTypes implements UnitTypes {
 	SCV(50, 0, 20, 1),
 	MARINE(100, 0, 30, 1),
 	FIREBAT(150, 50, 45, 1),
-	MEDIC(120, 50, 50, 1);
+	MEDIC(120, 50, 50, 1),
+	GHOST(130, 25, 45, 1);
 
 
 	private final int mRequiredMineral;
