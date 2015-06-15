@@ -4,6 +4,7 @@ package com.bong.starcraft.game;
 import com.bong.starcraft.building.Building;
 import com.bong.starcraft.building.BuildingTypes;
 import com.bong.starcraft.building.produce.AbstractProducableBuilding;
+import com.bong.starcraft.building.suppliable.Suppliable;
 import com.bong.starcraft.unit.Unit;
 import com.bong.starcraft.unit.UnitTypes;
 import com.bong.starcraft.unit.ground.buildable.AbstractBuildableUnit;
@@ -23,6 +24,9 @@ public class StarcraftGame {
 
 	private Tribe mTribe;
 	private boolean mIsStarted;
+
+
+	private int mUserPopulation = 0;
 
 
 
@@ -81,7 +85,7 @@ public class StarcraftGame {
 
 	public Building requestBuilding(BuildingTypes buildingTypes, AbstractBuildableUnit buildableUnit) {
 		try {
-			return getGameThreadExecutor().submit(new Callable<Building>() {
+			Building building = getGameThreadExecutor().submit(new Callable<Building>() {
 				@Override public Building call() throws Exception {
 					System.out.print(String.format("'%s' started to build '%s'", buildableUnit, buildingTypes));
 
@@ -98,6 +102,12 @@ public class StarcraftGame {
 					return buildableUnit.build(buildingTypes);
 				}
 			}).get();
+
+			// Set population
+			requestBuildingImpl(building);
+
+			// Return build result
+			return building;
 
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
@@ -122,13 +132,27 @@ public class StarcraftGame {
 					try { Thread.sleep(1000); } catch (InterruptedException e) {}
 				}
 
+
+				// Building built
+				Building building = buildableUnit.build(buildingTypes);
+
+				// Set population
+				requestBuildingImpl(building);
+
+
 				// Handle result
-				//return buildableUnit.build(buildingTypes);
-				if (handler != null) {
-					handler.onHandle(buildableUnit.build(buildingTypes));
-				}
+				if (handler != null) handler.onHandle(building);
 			}
 		});
+	}
+
+
+
+	private void requestBuildingImpl(Building building) {
+		if (building instanceof Suppliable) {
+			Suppliable s = (Suppliable) building;
+			mUserPopulation += s.getSuppliedPopulation();
+		}
 	}
 
 

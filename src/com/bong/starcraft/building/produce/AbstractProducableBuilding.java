@@ -10,13 +10,14 @@ import com.bong.starcraft.unit.UnitTypes;
 /**
  * Created by bong on 15. 6. 8.
  */
-public abstract class AbstractProducableBuilding<T> extends AbstractBuilding {
+public abstract class AbstractProducableBuilding<T> extends AbstractBuilding implements Procuable<T> {
 	public AbstractProducableBuilding(StarcraftGame gameInstance, int hitPoint) {
 		super(gameInstance, hitPoint);
 	}
 
 
 
+	@Override
 	public final T produce(UnitTypes unitTypes) {
 		// have enough resources?
 		unitTypes.getRequiredMineral();

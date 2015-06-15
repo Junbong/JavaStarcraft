@@ -1,6 +1,7 @@
 package com.bong.starcraft.building.produce;
 
 
+import com.bong.starcraft.building.suppliable.Suppliable;
 import com.bong.starcraft.game.StarcraftGame;
 import com.bong.starcraft.game.exception.NotProperTribeException;
 import com.bong.starcraft.unit.TerranUnitTypes;
@@ -13,7 +14,7 @@ import com.bong.starcraft.unit.ground.buildable.SCV;
 /**
  * Created by ȫ�� on 2015-06-10.
  */
-public class CommandCenter extends AbstractProducableBuilding<Unit> {
+public class CommandCenter extends AbstractProducableBuilding<Unit> implements Suppliable {
 	public CommandCenter(StarcraftGame gameInstance) {
 		super(gameInstance, 400);
 	}
@@ -47,5 +48,11 @@ public class CommandCenter extends AbstractProducableBuilding<Unit> {
 		}
 
 		throw new NotProperTribeException();
+	}
+
+
+
+	@Override public int getSuppliedPopulation() {
+		return 8;
 	}
 }
