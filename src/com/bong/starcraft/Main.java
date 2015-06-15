@@ -11,6 +11,7 @@ import com.bong.starcraft.game.StarcraftGame;
 import com.bong.starcraft.game.StarcraftGameHost;
 import com.bong.starcraft.game.Tribe;
 import com.bong.starcraft.unit.TerranUnitTypes;
+import com.bong.starcraft.unit.Unit;
 import com.bong.starcraft.unit.ground.attackable.Firebat;
 import com.bong.starcraft.unit.ground.attackable.Marine;
 import com.bong.starcraft.unit.ground.buildable.SCV;
@@ -54,9 +55,19 @@ public class Main {
 		SCV testScv2 = new SCV(game);
 
 		game.requestBuilding(TerranBuildingTypes.BARRACK, testScv2, result -> {
+			/*
 			Barrack barrack = (Barrack) result;
 			Firebat firebat = (Firebat) barrack.produce(TerranUnitTypes.FIREBAT);
 			firebat.talk();
+			*/
+
+			Barrack barrack = (Barrack) result;
+			game.requestUnit(TerranUnitTypes.FIREBAT, barrack, new Handler<Unit>() {
+				@Override public void onHandle(Unit result) {
+					Firebat firebat = (Firebat) result;
+					firebat.talk();
+				}
+			});
 		});
 
 

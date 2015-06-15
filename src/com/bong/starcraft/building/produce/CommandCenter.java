@@ -2,8 +2,10 @@ package com.bong.starcraft.building.produce;
 
 
 import com.bong.starcraft.game.StarcraftGame;
+import com.bong.starcraft.game.exception.NotProperTribeException;
 import com.bong.starcraft.unit.TerranUnitTypes;
 import com.bong.starcraft.unit.Unit;
+import com.bong.starcraft.unit.UnitTypes;
 import com.bong.starcraft.unit.ground.buildable.SCV;
 
 
@@ -24,7 +26,8 @@ public class CommandCenter extends AbstractProducableBuilding<Unit> {
 
 
 
-	@Override protected Unit onProduce(TerranUnitTypes unitTypes) {
+	@Override protected Unit onProduce(UnitTypes unitTypes) {
+		/*
 		switch (unitTypes) {
 			case SCV:
 				return new SCV(getGameInstance());
@@ -32,5 +35,17 @@ public class CommandCenter extends AbstractProducableBuilding<Unit> {
 			default:
 				throw new UnsupportedOperationException();
 		}
+		*/
+
+		if (unitTypes instanceof TerranUnitTypes) {
+			TerranUnitTypes terranUnitTypes = (TerranUnitTypes) unitTypes;
+
+			switch (terranUnitTypes) {
+				case SCV:
+					return new SCV(getGameInstance());
+			}
+		}
+
+		throw new NotProperTribeException();
 	}
 }

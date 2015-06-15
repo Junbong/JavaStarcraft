@@ -3,6 +3,9 @@ package com.bong.starcraft.game;
 
 import com.bong.starcraft.building.Building;
 import com.bong.starcraft.building.BuildingTypes;
+import com.bong.starcraft.building.produce.AbstractProducableBuilding;
+import com.bong.starcraft.unit.Unit;
+import com.bong.starcraft.unit.UnitTypes;
 import com.bong.starcraft.unit.ground.buildable.AbstractBuildableUnit;
 
 import java.util.concurrent.Callable;
@@ -123,6 +126,30 @@ public class StarcraftGame {
 				//return buildableUnit.build(buildingTypes);
 				if (handler != null) {
 					handler.onHandle(buildableUnit.build(buildingTypes));
+				}
+			}
+		});
+	}
+
+
+
+	public <T extends Unit> void requestUnit(UnitTypes unitTypes,
+			AbstractProducableBuilding<T> producableBuilding, Handler<Unit> handler) {
+		getGameThreadExecutor().execute(new Runnable() {
+			@Override public void run() {
+				System.out.println(String.format("'%s' started to produce '%s'...", producableBuilding, unitTypes));
+
+				// current time (milliseconds)
+				final long time1 = System.currentTimeMillis();
+
+				while ((System.currentTimeMillis() - time1) < unitTypes.getRequiredProduceTime() * 1000) {
+					try { Thread.sleep(1000); } catch (InterruptedException e) {}
+				}
+
+				// Handle result
+				//return buildableUnit.build(buildingTypes);
+				if (handler != null) {
+					handler.onHandle(producableBuilding.produce(unitTypes));
 				}
 			}
 		});

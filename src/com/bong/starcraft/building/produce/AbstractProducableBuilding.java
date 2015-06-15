@@ -1,9 +1,9 @@
 package com.bong.starcraft.building.produce;
 
 
-import com.bong.starcraft.game.StarcraftGame;
 import com.bong.starcraft.building.AbstractBuilding;
-import com.bong.starcraft.unit.TerranUnitTypes;
+import com.bong.starcraft.game.StarcraftGame;
+import com.bong.starcraft.unit.UnitTypes;
 
 
 
@@ -17,7 +17,7 @@ public abstract class AbstractProducableBuilding<T> extends AbstractBuilding {
 
 
 
-	public final T produce(TerranUnitTypes unitTypes) {
+	public final T produce(UnitTypes unitTypes) {
 		// have enough resources?
 		unitTypes.getRequiredMineral();
 		unitTypes.getRequiredGas();
@@ -40,7 +40,7 @@ public abstract class AbstractProducableBuilding<T> extends AbstractBuilding {
 
 
 
-	protected abstract T onProduce(TerranUnitTypes unitTypes);
+	protected abstract T onProduce(UnitTypes unitTypes);
 }
 
 

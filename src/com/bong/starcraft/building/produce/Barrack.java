@@ -2,8 +2,10 @@ package com.bong.starcraft.building.produce;
 
 
 import com.bong.starcraft.game.StarcraftGame;
+import com.bong.starcraft.game.exception.NotProperTribeException;
 import com.bong.starcraft.unit.TerranUnitTypes;
 import com.bong.starcraft.unit.Unit;
+import com.bong.starcraft.unit.UnitTypes;
 import com.bong.starcraft.unit.ground.attackable.Firebat;
 import com.bong.starcraft.unit.ground.attackable.Marine;
 import com.bong.starcraft.unit.ground.healable.Medic;
@@ -26,20 +28,23 @@ public class Barrack extends AbstractProducableBuilding<Unit> {
 
 
 
-	@Override protected Unit onProduce(TerranUnitTypes unitTypes) {
-		switch (unitTypes) {
-			case MARINE:
-				TerranUnitTypes.MARINE.getRequiredMineral();
-				return new Marine(getGameInstance());
+	@Override protected Unit onProduce(UnitTypes unitTypes) {
+		if (unitTypes instanceof TerranUnitTypes) {
+			TerranUnitTypes terranUnitTypes = (TerranUnitTypes) unitTypes;
 
-			case FIREBAT:
-				return new Firebat(getGameInstance());
+			switch (terranUnitTypes) {
+				case MARINE:
+					TerranUnitTypes.MARINE.getRequiredMineral();
+					return new Marine(getGameInstance());
 
-			case MEDIC:
-				return new Medic(getGameInstance());
+				case FIREBAT:
+					return new Firebat(getGameInstance());
 
-			default:
-				throw new UnsupportedOperationException();
+				case MEDIC:
+					return new Medic(getGameInstance());
+			}
 		}
+
+		throw new NotProperTribeException();
 	}
 }
