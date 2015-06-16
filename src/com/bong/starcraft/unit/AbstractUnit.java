@@ -2,6 +2,7 @@ package com.bong.starcraft.unit;
 
 
 import com.bong.starcraft.game.StarcraftGame;
+import com.bong.starcraft.game.util.ObjectUtil;
 
 
 
@@ -10,6 +11,8 @@ import com.bong.starcraft.game.StarcraftGame;
  */
 public abstract class AbstractUnit implements Unit {
 	private final StarcraftGame mGameInstance;
+	private final int mObjectId;
+	private final String mName;
 
 	private int mRemainingHitPoint;
 	private int mMaxHitPoint;
@@ -17,10 +20,20 @@ public abstract class AbstractUnit implements Unit {
 
 
 	public AbstractUnit(StarcraftGame gameInstance, int hitPoint) {
+		if (gameInstance == null) throw new IllegalArgumentException();
+
 		this.mGameInstance = gameInstance;
+		this.mObjectId = gameInstance.getGameObjectManager().nextObjectId();
+		this.mName = ObjectUtil.newName(this);
 
 		this.mRemainingHitPoint = hitPoint;
 		this.mMaxHitPoint = mRemainingHitPoint;
+	}
+
+
+
+	@Override public String toString() {
+		return mName;
 	}
 
 
@@ -31,8 +44,8 @@ public abstract class AbstractUnit implements Unit {
 
 
 
-	@Override public String toString() {
-		return getClass().getSimpleName();
+	@Override public int getObjectId() {
+		return mObjectId;
 	}
 
 
@@ -103,14 +116,15 @@ public abstract class AbstractUnit implements Unit {
 
 
 	@Override public void move(int x, int y) {
-		System.out.println(String.format("Moved to (%d, %d)", x, y));
+		System.out.println(String.format("'%s' moved to (%d, %d)",
+				this.toString(), x, y));
 	}
 
 
 
 	@Override public final void talk() {
 		System.out.println(String.format("'%s' says: \"%s\"",
-				getClass().getSimpleName(), onTalk()));
+				this.toString(), onTalk()));
 	}
 
 
@@ -122,7 +136,7 @@ public abstract class AbstractUnit implements Unit {
 
 
 	@Override public void die() {
-		System.out.println(String.format("'%s' died...", getClass().getSimpleName()));
+		System.out.println(String.format("'%s' died...", this.toString()));
 	}
 
 

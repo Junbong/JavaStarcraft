@@ -1,10 +1,17 @@
 package com.bong.starcraft.building;
 
+
+import com.bong.starcraft.ObjectTypes;
+
+
+
 /**
- * Created by È«¼® on 2015-06-09.
+ * Created by bong on 15. 6. 9.
  */
-public interface BuildingTypes {
-    public int getRequiredMineral();
-    public int getRequiredGas();
-    public int getRequiredProduceTime();
+public interface BuildingTypes extends ObjectTypes {
+	@Override public int getRequiredMineral();
+
+	@Override public int getRequiredGas();
+
+	@Override public int getRequiredProduceTime();
 }

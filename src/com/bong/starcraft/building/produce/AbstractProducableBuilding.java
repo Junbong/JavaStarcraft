@@ -32,8 +32,8 @@ public abstract class AbstractProducableBuilding<T> extends AbstractBuilding imp
 		T unit = onProduce(unitTypes);
 
 		if (unit != null) {
-			System.out.println(String.format("'%s' produce '%s'!",
-					getClass().getSimpleName(), unit));
+			System.out.println(String.format("'%s' produces '%s'!",
+					this.toString(), unit));
 		}
 
 		return unit;

@@ -18,8 +18,8 @@ public abstract class AbstractBuildableUnit<T> extends AbstractUnit {
 
 
 	public final Building build(final T buildingTypes) {
-		System.out.println(String.format("'%s' build '%s'!",
-				getClass().getSimpleName(), buildingTypes));
+		System.out.println(String.format("'%s' builds '%s' complete!",
+				this.toString(), buildingTypes));
 
 		return onBuild(buildingTypes);
 

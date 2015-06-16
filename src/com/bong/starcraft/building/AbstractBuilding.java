@@ -2,6 +2,7 @@ package com.bong.starcraft.building;
 
 
 import com.bong.starcraft.game.StarcraftGame;
+import com.bong.starcraft.game.util.ObjectUtil;
 
 
 
@@ -10,6 +11,7 @@ import com.bong.starcraft.game.StarcraftGame;
  */
 public abstract class AbstractBuilding implements Building {
 	private final StarcraftGame mGameInstance;
+	private final int mObjectId;
 	private final String mName;
 
 	private int mRemainingHitPoint;
@@ -20,7 +22,8 @@ public abstract class AbstractBuilding implements Building {
 
 	public AbstractBuilding(StarcraftGame gameInstance, int hitPoint) {
 		this.mGameInstance = gameInstance;
-		this.mName = getClass().getSimpleName();
+		this.mObjectId = gameInstance.getGameObjectManager().nextObjectId();
+		this.mName = ObjectUtil.newName(this);
 
 		this.mRemainingHitPoint = hitPoint;
 		this.mMaxHitPoint = mRemainingHitPoint;
@@ -28,8 +31,20 @@ public abstract class AbstractBuilding implements Building {
 
 
 
+	@Override public String toString() {
+		return mName;
+	}
+
+
+
 	@Override public StarcraftGame getGameInstance() {
 		return mGameInstance;
+	}
+
+
+
+	@Override public int getObjectId() {
+		return mObjectId;
 	}
 
 

@@ -38,37 +38,43 @@ public class Main {
 		game.requestBuilding(TerranBuildingTypes.COMMAND_CENTER, testSCV1, new Handler<Building>() {
 			@Override public void onHandle(Building result) {
 				CommandCenter commandCenter = (CommandCenter) result;
-				SCV scv1 = (SCV) commandCenter.produce(TerranUnitTypes.SCV);
-				scv1.talk();
 
-				game.requestBuilding(TerranBuildingTypes.BARRACK, scv1, new Handler<Building>() {
-					@Override public void onHandle(Building result) {
-						Barrack barrack = (Barrack) result;
-						Marine marine1 = (Marine) barrack.produce(TerranUnitTypes.MARINE);
-						marine1.talk();
-					}
+				game.requestUnit(TerranUnitTypes.SCV, commandCenter, unit -> {
+					SCV scv1 = (SCV) unit;
+					scv1.talk();
+
+					game.requestBuilding(TerranBuildingTypes.BARRACK, scv1, new Handler<Building>() {
+						@Override public void onHandle(Building result) {
+							Barrack barrack = (Barrack) result;
+
+							game.requestUnit(TerranUnitTypes.MARINE, barrack, result1 -> {
+								Marine marine1 = (Marine) result1;
+								marine1.talk();
+							});
+						}
+					});
 				});
 			}
 		});
 
 
-		SCV testScv2 = new SCV(game);
-
-		game.requestBuilding(TerranBuildingTypes.BARRACK, testScv2, result -> {
-			/*
-			Barrack barrack = (Barrack) result;
-			Firebat firebat = (Firebat) barrack.produce(TerranUnitTypes.FIREBAT);
-			firebat.talk();
-			*/
-
-			Barrack barrack = (Barrack) result;
-			game.requestUnit(TerranUnitTypes.FIREBAT, barrack, new Handler<Unit>() {
-				@Override public void onHandle(Unit result) {
-					Firebat firebat = (Firebat) result;
-					firebat.talk();
-				}
-			});
-		});
+//		SCV testScv2 = new SCV(game);
+//
+//		game.requestBuilding(TerranBuildingTypes.BARRACK, testScv2, result -> {
+//			/*
+//			Barrack barrack = (Barrack) result;
+//			Firebat firebat = (Firebat) barrack.produce(TerranUnitTypes.FIREBAT);
+//			firebat.talk();
+//			*/
+//
+//			Barrack barrack = (Barrack) result;
+//			game.requestUnit(TerranUnitTypes.FIREBAT, barrack, new Handler<Unit>() {
+//				@Override public void onHandle(Unit result) {
+//					Firebat firebat = (Firebat) result;
+//					firebat.talk();
+//				}
+//			});
+//		});
 
 
 //		StarcraftGameHost.stopGame(game);

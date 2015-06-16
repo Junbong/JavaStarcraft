@@ -10,6 +10,7 @@ import com.bong.starcraft.game.StarcraftGame;
  */
 public interface StarcraftObject {
 	public StarcraftGame getGameInstance();
+	public int getObjectId();
 
 
 	public int getMaxHitPoint();
